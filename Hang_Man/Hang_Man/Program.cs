@@ -41,7 +41,7 @@ namespace Hangman
             userName = Console.ReadLine();
 
             Console.Clear();
-            Console.WriteLine("\nWelcome to DRAGON HIT, " + userName);
+            Console.WriteLine("\nWelcome to Hangman, " + userName);
             Console.WriteLine("\ntype \"HELP\" for the introduction \n or Press enter to skip the introduction:");
             string temp = Console.ReadLine();
 
@@ -95,6 +95,7 @@ If you can't guess in 7 lives, you will lose.
                  
                     Console.WriteLine("\nCongratulations, " + userName + " you won!");
                     Console.WriteLine("The word is: " + randomWord);
+                    Console.ReadKey();
                     won = true;
                 }
 
@@ -102,12 +103,13 @@ If you can't guess in 7 lives, you will lose.
                 {
                     //get user's guess
                     
-                    Console.WriteLine("\n\nYou have " + noOfLives + " lives left. Guess");
+                    Console.WriteLine("\n\nYou have " + noOfLives + " lives left\nEnter your guess");
                     usersGuess = Console.ReadLine();
                     UsersGuessVerify(usersGuess);
                     if ((noOfLives == 0) && (won == false))
                     {
                         Console.WriteLine("\nSorry " + userName + " you ran out of lives. Game over");
+                        Console.WriteLine("The word is: " + randomWord);
                         Console.ReadKey();
                         won = true;
                     }
@@ -123,7 +125,7 @@ If you can't guess in 7 lives, you will lose.
             //verify if user entered a letter or word
             if (guess.Length > 1) //means user entered a word
             {
-                if (guess == randomWord)
+                if (guess.ToLower() == randomWord)
                 {
                     Console.WriteLine("Congratulations, " + userName + " you won!");
                     //Console.WriteLine(randomWord);
@@ -141,17 +143,27 @@ If you can't guess in 7 lives, you will lose.
             }
             else //he entered a letter
             {
-                //add that letter to the guessed letters
-                lettersGuessed = lettersGuessed + guess;
-
+                
                 //verify if the word to be guessed has the letter entered by user
-                if (randomWord.Contains(guess))
+                if (lettersGuessed.Contains(guess))
                 {
+                    Console.WriteLine("You already guessed that letter");
+                    //add that letter to the guessed letters
+                    lettersGuessed = lettersGuessed + guess;
+                    return;
+                }
+                else if (randomWord.Contains(guess))
+                {
+                    //add that letter to the guessed letters
+                    lettersGuessed = lettersGuessed + guess;
+
                     return;
                 }
                 else
                 {
                     noOfLives--;
+                    //add that letter to the guessed letters
+                    lettersGuessed = lettersGuessed + guess;
                     Console.WriteLine("You guessed wrong. You have " + noOfLives + " lives left");
                     Console.WriteLine("You have guessed: " + lettersGuessed);
                     return;
